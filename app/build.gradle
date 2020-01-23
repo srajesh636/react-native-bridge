@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 
 project.ext.react = [
-        entryFile: "index.js",
-        root:"$project.rootDir/index.js",
+        entryFile   : "index.js",
+        root        : "$project.rootDir/index.js",
         enableHermes: true,  // clean and rebuild if changing
 ]
 
@@ -23,6 +23,11 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
+        debug {
+            minifyEnabled false
+            debuggable true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'

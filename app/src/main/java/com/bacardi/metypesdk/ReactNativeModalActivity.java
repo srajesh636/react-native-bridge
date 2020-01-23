@@ -6,10 +6,9 @@ import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.view.KeyEvent;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
-
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactRootView;
@@ -19,6 +18,9 @@ import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.squareup.otto.Subscribe;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import static java.util.Arrays.asList;
 
 public class ReactNativeModalActivity extends AppCompatActivity implements DefaultHardwareBackBtnHandler {
@@ -26,13 +28,26 @@ public class ReactNativeModalActivity extends AppCompatActivity implements Defau
     private final int OVERLAY_PERMISSION_REQ_CODE = 8762;
     private ReactRootView mReactRootView;
     private ReactInstanceManager mReactInstanceManager;
+    private Button commentsButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.react_native_modal_activity_layout);
+
+        mReactRootView = findViewById(R.id.reactView);
+        commentsButton = findViewById(R.id.comments_btn);
+
+        commentsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                setupReactView();
+            }
+        });
+
         registerToReactEvents();
-        askReactDrawingPermission();
-        setupReactView();
+        //TODO: We need this permission just for development purpose.
+        //askReactDrawingPermission();
     }
 
     @Override
@@ -62,7 +77,8 @@ public class ReactNativeModalActivity extends AppCompatActivity implements Defau
 
     @Subscribe
     public void close(ReactNativeModalBridge.CloseModalEvent event) {
-        finish();
+        // finish();
+        mReactRootView.setVisibility(View.INVISIBLE);
     }
 
     private void askReactDrawingPermission() {
@@ -78,21 +94,21 @@ public class ReactNativeModalActivity extends AppCompatActivity implements Defau
     }
 
     private void setupReactView() {
-        SoLoader.init(this,false);
+        if (mReactRootView.getReactInstanceManager() == null) {
+            SoLoader.init(this, false);
 
-        mReactRootView = new ReactRootView(this);
-        mReactInstanceManager = ReactInstanceManager.builder()
-                .setApplication(getApplication())
-                .setCurrentActivity(this)
-                .setBundleAssetName("index.android.bundle")
-                .setJSMainModulePath("index")
-                .addPackages(asList(new MainReactPackage(), new NativeModulesPackage()))
-                .setUseDeveloperSupport(BuildConfig.DEBUG)
-                .setInitialLifecycleState(LifecycleState.RESUMED)
-                .build();
-        mReactRootView.startReactApplication(mReactInstanceManager, "ReactNativeModal", null);
-
-        setContentView(mReactRootView);
+            mReactInstanceManager = ReactInstanceManager.builder()
+                    .setApplication(getApplication())
+                    .setCurrentActivity(this)
+                    .setBundleAssetName("index.android.bundle")
+                    .setJSMainModulePath("index")
+                    .addPackages(asList(new MainReactPackage(), new NativeModulesPackage()))
+                    .setUseDeveloperSupport(BuildConfig.DEBUG)
+                    .setInitialLifecycleState(LifecycleState.RESUMED)
+                    .build();
+            mReactRootView.startReactApplication(mReactInstanceManager, "ReactNativeModal", null);
+        }
+        mReactRootView.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -124,11 +140,12 @@ public class ReactNativeModalActivity extends AppCompatActivity implements Defau
 
     @Override
     public void onBackPressed() {
-        if (mReactInstanceManager != null) {
+        super.onBackPressed();
+       /* if (mReactInstanceManager != null) {
             mReactInstanceManager.onBackPressed();
         } else {
             super.onBackPressed();
-        }
+        }*/
     }
 
     @Override

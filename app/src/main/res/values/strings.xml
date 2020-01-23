@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">MetypeSDK</string>
     <string name="comments">Open Comments Dialog</string>
+    <string name="view_comments">View Comments</string>
 </resources>
