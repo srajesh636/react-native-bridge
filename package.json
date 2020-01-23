@@ -1,0 +1,19 @@
+{
+  "name": "metype-sdk",
+  "version": "1.0.0",
+  "description": "Cross Platform Metype SDK",
+  "main": "index.js",
+  "scripts": {
+    "start": "react-native start",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "react-native"
+  ],
+  "author": "U Sai Rajesh",
+  "license": "ISC",
+  "dependencies": {
+    "react": "^16.12.0",
+    "react-native": "^0.61.5"
+  }
+}
