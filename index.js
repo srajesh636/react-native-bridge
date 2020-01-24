@@ -1,7 +1,11 @@
 import React from 'react';
-import {AppRegistry, StyleSheet, Text, View, Button, NativeModules} from 'react-native';
+import {AppRegistry, StyleSheet, Text, View, Button, NativeModules ,DeviceEventEmitter} from 'react-native';
 
 class ReactNativeModal extends React.Component {
+    componentDidMount(){
+         DeviceEventEmitter.addListener('MyCustomEvent',(event)=>{
+         alert(event.MyCustomEventParam);
+    }
     render() {
         return (
             <View style={styles.container}>

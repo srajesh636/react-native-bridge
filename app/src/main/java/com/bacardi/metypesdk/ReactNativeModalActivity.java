@@ -12,8 +12,11 @@ import android.widget.Toast;
 
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactRootView;
+import com.facebook.react.bridge.Arguments;
+import com.facebook.react.bridge.WritableMap;
 import com.facebook.react.common.LifecycleState;
 import com.facebook.react.modules.core.DefaultHardwareBackBtnHandler;
+import com.facebook.react.modules.core.DeviceEventManagerModule;
 import com.facebook.react.shell.MainReactPackage;
 import com.facebook.soloader.SoLoader;
 import com.squareup.otto.Subscribe;
@@ -29,6 +32,7 @@ public class ReactNativeModalActivity extends AppCompatActivity implements Defau
     private ReactRootView mReactRootView;
     private ReactInstanceManager mReactInstanceManager;
     private Button commentsButton;
+    private Button sendDataButton;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,6 +41,7 @@ public class ReactNativeModalActivity extends AppCompatActivity implements Defau
 
         mReactRootView = findViewById(R.id.reactView);
         commentsButton = findViewById(R.id.comments_btn);
+        sendDataButton = findViewById(R.id.send_data_btn);
 
         commentsButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -45,9 +50,26 @@ public class ReactNativeModalActivity extends AppCompatActivity implements Defau
             }
         });
 
+        sendDataButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                emitData();
+            }
+        });
+
         registerToReactEvents();
         //TODO: We need this permission just for development purpose.
         //askReactDrawingPermission();
+    }
+
+    private void emitData() {
+        WritableMap payload = Arguments.createMap();
+        // Put data to map
+        payload.putString("MyCustomEventParam", "This string is coming from Java Code");
+
+        // Emitting event from java code
+        (mReactInstanceManager.getCurrentReactContext()).getJSModule(DeviceEventManagerModule.RCTDeviceEventEmitter.class)
+                .emit("MyCustomEvent", payload);
     }
 
     @Override
