@@ -19,7 +19,7 @@ allprojects {
         google()
         jcenter()
         maven {
-          url "$rootDir/node_modules/react-native/android"
+          url "$rootDir/app/node_modules/react-native/android"
         }
     }
 }

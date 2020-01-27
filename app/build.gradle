@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 project.ext.react = [
         entryFile   : "index.js",
-        root        : "$project.rootDir/index.js",
+        root        : "$project.rootDir/app/index.js",
         enableHermes: true,  // clean and rebuild if changing
 ]
 
@@ -44,7 +44,7 @@ dependencies {
     testImplementation 'junit:junit:4.12'
 
     if (enableHermes) {
-        def hermesPath = "../node_modules/hermes-engine/android/"
+        def hermesPath = "node_modules/hermes-engine/android/"
         debugImplementation files(hermesPath + "hermes-debug.aar")
         releaseImplementation files(hermesPath + "hermes-release.aar")
     } else {
