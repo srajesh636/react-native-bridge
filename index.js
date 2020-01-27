@@ -5,6 +5,7 @@ class ReactNativeModal extends React.Component {
     componentDidMount(){
          DeviceEventEmitter.addListener('MyCustomEvent',(event)=>{
          alert(event.MyCustomEventParam);
+    })
     }
     render() {
         return (
