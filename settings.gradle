@@ -1,2 +1,2 @@
-include ':app', ':react_native_svg'
+include ':app'
 rootProject.name='MetypeSDK'
